@@ -1,0 +1,22 @@
+{
+  "name": "cybersage",
+  "version": "1.0.0",
+  "description": "Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ECU-ATMAE-ROBOTICS/CyberSage.git"
+  },
+  "author": "Jarred",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/ECU-ATMAE-ROBOTICS/CyberSage/issues"
+  },
+  "homepage": "https://github.com/ECU-ATMAE-ROBOTICS/CyberSage#readme",
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  }
+}
