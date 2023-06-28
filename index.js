@@ -11,17 +11,12 @@ const client = new Client({
     partials: ["MESSAGE", "CHANNEL", "REACTION", "USER", "GUILD_MEMBER"],
 });
 
-// Constants
-const ROLE_SET_MESSAGE_ID = "1123120003047247952";
-const ROLE_SET_CHANNEL_ID = "1123119173757849731";
-const SERVER_ID = "1106740376515125309";
-const bulbEmoji = "💡";
-const computerEmoji = "💻";
-const toolsEmoji = "🛠️";
+// Load constants
+const constants = require("./src/util/constants");
 
 // Load event handlers
-const messageReactionAddHandler = require("./eventHandlers/messageReactionAdd");
-const messageReactionRemoveHandler = require("./eventHandlers/messageReactionRemove");
+const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAdd");
+const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactionRemove");
 
 client.on("ready", async () => {
     //TODO Cache all members
@@ -30,35 +25,39 @@ client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}`);
 
     client.channels.cache
-        .get(ROLE_SET_CHANNEL_ID)
-        .messages.fetch(ROLE_SET_MESSAGE_ID)
+        .get(constants.ID.roleSelectionChannelID)
+        .messages.fetch(constants.ID.setRoleMessageID)
         .then(() => {
             console.log(`The role-setting message has been cached`);
         });
 
     try {
-        const guild = client.guilds.cache.get(SERVER_ID);
+        const guild = client.guilds.cache.get(constants.ID.serverID);
         if (!guild) throw new Error("Guild not found.");
 
-        const channel = guild.channels.cache.get(ROLE_SET_CHANNEL_ID);
+        const channel = guild.channels.cache.get(
+            constants.ID.roleSelectionChannelID
+        );
         if (!channel) throw new Error("Channel not found.");
 
-        const message = await channel.messages.fetch(ROLE_SET_MESSAGE_ID);
+        const message = await channel.messages.fetch(
+            constants.ID.setRoleMessageID
+        );
         if (!message) throw new Error("Message not found.");
         const reactedEmojis = message.reactions.cache.map(
             (reaction) => reaction.emoji.name
         );
 
-        if (!reactedEmojis.includes(bulbEmoji)) {
-            await message.react(bulbEmoji);
+        if (!reactedEmojis.includes(constants.reactionEmoji.bulbEmoji)) {
+            await message.react(constants.reactionEmoji.bulbEmoji);
         }
 
-        if (!reactedEmojis.includes(computerEmoji)) {
-            await message.react(computerEmoji);
+        if (!reactedEmojis.includes(constants.reactionEmoji.computerEmoji)) {
+            await message.react(constants.reactionEmoji.computerEmoji);
         }
 
-        if (!reactedEmojis.includes(toolsEmoji)) {
-            await message.react(toolsEmoji);
+        if (!reactedEmojis.includes(constants.reactionEmoji.toolsEmoji)) {
+            await message.react(constants.reactionEmoji.toolsEmoji);
         }
 
         console.log("Bot checked and added reactions if missing.");
@@ -67,8 +66,6 @@ client.on("ready", async () => {
     }
 });
 
-//TODO Need to consider how the handlers will recieve
-//TODO the constants defined at the top
 // Register event handlers
 client.on("messageReactionAdd", (reaction, user) => {
     messageReactionAddHandler(client, reaction, user);
