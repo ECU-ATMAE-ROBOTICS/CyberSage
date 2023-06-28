@@ -28,7 +28,7 @@ module.exports = {
     },
 
     logger: {
-        filepath: "/src/logger/logs/log.txt",
-        timerInterval: 1800000, // 30 minutes
+        filePath: "./src/logger/logs",
+        timerInterval: 10000, // 30 minutes
     },
 };
