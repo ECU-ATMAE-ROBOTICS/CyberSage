@@ -2,13 +2,18 @@
 const constants = require(`../util/constants`);
 const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
 
+/**
+ * Removes a role associated with the reaction that was removed.
+ * @param {*} client The bot itself.
+ * @param {*} reaction The reaction that was caught in the remove reaction event.
+ * @param {*} user The user who removed a reaction.
+ * @returns
+ */
 module.exports = async (client, reaction, user) => {
-    // Check if the user is the bot
     if (user.id === client.user.id) {
-        // The reaction was added by the bot itself
         return;
     }
-    // Check if the reaction was added to a specific message
+
     if (reaction.message.id === constants.ID.setRoleMessageID) {
         const guild = reaction.message.guild;
         const member = guild.members.cache.get(user.id);

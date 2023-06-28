@@ -2,13 +2,18 @@
 const constants = require(`../util/constants`);
 const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
 
+/**
+ * Adds a role associated with the reaction that was added.
+ * @param {*} client The bot itself.
+ * @param {*} reaction The reaction that was added.
+ * @param {*} user The user who added the reaction.
+ * @returns
+ */
 module.exports = async (client, reaction, user) => {
-    // Check if the user is the bot
     if (user.id === client.user.id) {
-        // The reaction was added by the bot itself
         return;
     }
-    // Check if the reaction was added to a specific message
+
     if (reaction.message.id === constants.ID.setRoleMessageID) {
         const guild = reaction.message.guild;
         const member = guild.members.cache.get(user.id);
