@@ -1,5 +1,5 @@
 class LogSaveException extends Error {
-    constructor(message, err) {
+    constructor(message = "", err) {
         super(message);
         this.name = "LogSaveException";
         this.parentError = err;
