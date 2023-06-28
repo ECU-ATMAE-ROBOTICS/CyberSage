@@ -1,6 +1,6 @@
 //TODO Create a config page where some of these values can be easily changed
 module.exports = {
-    reactionEmoji: {
+    reactionEmojis: {
         bulbEmoji: "💡",
         computerEmoji: "💻",
         toolsEmoji: "🛠️",
@@ -27,7 +27,8 @@ module.exports = {
         FATAL: "Fatal",
     },
 
-    logs: {
+    logger: {
         filepath: "/src/logger/logs/log.txt",
+        timerInterval: 1800000, // 30 minutes
     },
 };
