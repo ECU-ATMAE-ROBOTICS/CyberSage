@@ -1,4 +1,5 @@
 const { logLevels } = require("./constants");
+const Logger = require("../logger/logger");
 
 module.exports = {
     removeRole: async (guild, member, roleName) => {
