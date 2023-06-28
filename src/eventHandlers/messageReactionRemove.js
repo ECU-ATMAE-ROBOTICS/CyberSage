@@ -2,6 +2,11 @@
 const constants = require(`../util/constants`);
 const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
 
+const ID = constants.ID;
+const reactionEmoji = constants.reactionEmojis;
+const logLevels = constants.logLevels;
+const roles = constants.roles;
+
 /**
  * Removes a role associated with the reaction that was removed.
  * @param {*} client The bot itself.
@@ -14,29 +19,38 @@ module.exports = async (client, reaction, user) => {
         return;
     }
 
-    if (reaction.message.id === constants.ID.setRoleMessageID) {
+    if (reaction.message.id === ID.setRoleMessageID) {
         const guild = reaction.message.guild;
         const member = guild.members.cache.get(user.id);
         switch (reaction.emoji.name) {
-            case constants.reactionEmoji.bulbEmoji:
+            case reactionEmoji.bulbEmoji:
                 // Handle :bulb: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Electrical`);
+                roleSelectionHelpers.removeRole(
+                    guild,
+                    member,
+                    roles.electrical
+                );
                 break;
 
-            case constants.reactionEmoji.computerEmoji:
+            case reactionEmoji.computerEmoji:
                 // Handle :computer: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Code`);
+                roleSelectionHelpers.removeRole(guild, member, roles.code);
                 break;
 
-            case constants.reactionEmoji.toolsEmoji:
+            case reactionEmoji.toolsEmoji:
                 // Handle :tools: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Fabrication`);
+                roleSelectionHelpers.removeRole(
+                    guild,
+                    member,
+                    roles.fabrication
+                );
                 break;
 
             default:
                 // Handle other reactions
-                console.log(
-                    `User ${user.tag} reacted with an unrecognized emoji: ${reaction.emoji.name}`
+                Logger.log(
+                    `User ${user.tag} reacted with an unrecognized emoji: ${reaction.emoji.name}`,
+                    logLevels.INFO
                 );
                 break;
         }
