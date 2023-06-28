@@ -26,9 +26,12 @@ class Logger {
      */
     static saveToFile(filePath) {
         try {
-            const logData = this.logs.join("\n");
-            Logger.log(`Logs saved to file: ${filePath}`, logLevels.INFO);
-            fs.appendFileSync(filePath, logData);
+            // length is 1 + the highest index
+            if (this.logs.length <= 1) {
+                const logData = this.logs.join("\n");
+                Logger.log(`Logs saved to file: ${filePath}`, logLevels.INFO);
+                fs.appendFileSync(filePath, logData);
+            }
         } catch (error) {
             console.error("Error saving logs to file, printing to console: \n");
             console.error(logData);
