@@ -1,30 +1,44 @@
 module.exports = {
-    removeRole: async (guild, member, role) => {
+    removeRole: async (guild, member, roleName) => {
         try {
-            const eRole = guild.roles.cache.find((role) => role.name === role);
-            if (member.roles.cache.has(eRole)) {
-                await member.roles.remove(eRole);
+            const role = guild.roles.cache.find((r) => r.name === roleName);
+            if (role && member.roles.cache.has(role.id)) {
+                await console.log(member.roles.cache.has(role.id));
+                await member.roles.remove(role);
+                console.log(
+                    `Role "${role.name}" has been removed from member ${member.user.tag}`
+                );
                 return true;
             } else {
+                console.log(
+                    `Role "${roleName}" was not found on member ${member.user.tag}`
+                );
                 return false;
             }
         } catch (error) {
             console.error("Error removing role:", error);
+            return false;
         }
     },
-    addRole: async (guild, member, role) => {
+
+    addRole: async (guild, member, roleName) => {
         try {
-            const eRole = guild.roles.cache.find(
-                (eRole) => eRole.name === role
-            );
-            if (!member.roles.cache.has(eRole)) {
-                await member.roles.add(eRole);
+            const role = guild.roles.cache.find((r) => r.name === roleName);
+            if (role && !member.roles.cache.has(role.id)) {
+                await member.roles.add(role);
+                console.log(
+                    `Role "${role.name}" has been added to member ${member.user.tag}`
+                );
                 return true;
             } else {
+                console.log(
+                    `Role "${roleName}" was not found or already assigned to member ${member.user.tag}`
+                );
                 return false;
             }
         } catch (error) {
             console.error("Error assigning role:", error);
+            return false;
         }
     },
 };
