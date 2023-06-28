@@ -27,10 +27,11 @@ const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactio
 
 client.on("ready", async () => {
     //TODO Cache all chat history in last 30 days, for each channel
-    Logger.restartTimer();
+    Logger.startTimer();
 
     Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
+    //TODO Manage error throwing to go through logger
     const guild = client.guilds.cache.get(constants.ID.serverID);
     if (!guild) throw new Error("Guild not found.");
 
@@ -44,13 +45,22 @@ client.on("ready", async () => {
 
         guild.members.cache.forEach((member) => {
             const memberRoles = member.roles.cache.map((role) => role.name);
-            console.log(
-                `Member ${member.user.tag} has roles: ${memberRoles.join(", ")}`
+            Logger.log(
+                `Member ${member.user.tag} has roles: ${memberRoles.join(
+                    ", "
+                )}`,
+                logLevels.INFO
             );
         });
-        console.log("All members and their roles have been cached.");
+        Logger.log(
+            "All members and their roles have been cached.",
+            logLevels.INFO
+        );
     } catch (error) {
-        console.error("Error caching members and roles:", error);
+        Logger.log(
+            `Error caching members and roles: ${error}`,
+            logLevels.WARNING
+        );
     }
 
     const message = await channel.messages.fetch(constants.ID.setRoleMessageID);
@@ -71,7 +81,7 @@ client.on("ready", async () => {
         await message.react(reactionEmoji.toolsEmoji);
     }
 
-    console.log("Bot checked and added reactions if missing.");
+    Logger.log("Bot checked and added reactions if missing.", logLevels.INFO);
 });
 
 // Register event handlers
