@@ -15,17 +15,17 @@ module.exports = async (client, reaction, user) => {
         switch (reaction.emoji.name) {
             case constants.reactionEmoji.bulbEmoji:
                 // Handle :bulb: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Electrical`);
+                roleSelectionHelpers.addRole(guild, member, `Electrical`);
                 break;
 
             case constants.reactionEmoji.computerEmoji:
                 // Handle :computer: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Code`);
+                roleSelectionHelpers.addRole(guild, member, `Code`);
                 break;
 
             case constants.reactionEmoji.toolsEmoji:
                 // Handle :tools: reaction
-                roleSelectionHelpers.removeRole(guild, member, `Fabrication`);
+                roleSelectionHelpers.addRole(guild, member, `Fabrication`);
                 break;
 
             default:
