@@ -1,6 +1,7 @@
 // Load constants
 const constants = require(`../util/constants`);
 const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
+const Logger = require("../logger/logger");
 
 const ID = constants.ID;
 const reactionEmoji = constants.reactionEmojis;
