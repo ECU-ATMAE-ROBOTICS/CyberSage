@@ -15,35 +15,19 @@ module.exports = async (client, reaction, user) => {
         switch (reaction.emoji.name) {
             case constants.reactionEmoji.bulbEmoji:
                 // Handle :bulb: reaction
-                if (
-                    roleSelectionHelpers.removeRole(guild, member, `Electrical`)
-                ) {
-                    console.log(
-                        `${user.tag} has had the Eletrical role removed.`
-                    );
-                }
+                roleSelectionHelpers.removeRole(guild, member, `Electrical`);
                 break;
 
             case constants.reactionEmoji.computerEmoji:
                 // Handle :computer: reaction
-                if (roleSelectionHelpers.removeRole(guild, member, `Code`)) {
-                    console.log(`${user.tag} has had the Code role removed.`);
-                }
+                roleSelectionHelpers.removeRole(guild, member, `Code`);
                 break;
+
             case constants.reactionEmoji.toolsEmoji:
                 // Handle :tools: reaction
-                if (
-                    roleSelectionHelpers.removeRole(
-                        guild,
-                        member,
-                        `Fabrication`
-                    )
-                ) {
-                    console.log(
-                        `${user.tag} has had the Fabrication role removed.`
-                    );
-                }
+                roleSelectionHelpers.removeRole(guild, member, `Fabrication`);
                 break;
+
             default:
                 // Handle other reactions
                 console.log(
