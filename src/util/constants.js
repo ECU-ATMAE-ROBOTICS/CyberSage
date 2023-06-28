@@ -6,6 +6,12 @@ module.exports = {
         toolsEmoji: "🛠️",
     },
 
+    roles: {
+        electrical: "Electrical",
+        code: "Code",
+        fabrication: "Fabrication",
+    },
+
     ID: {
         setRoleMessageID: "1123120003047247952",
         roleSelectionChannelID: "1123119173757849731",
@@ -19,5 +25,9 @@ module.exports = {
         DEBUG: "Debug",
         ERROR: "Error",
         FATAL: "Fatal",
+    },
+
+    logs: {
+        filepath: "/src/logger/logs/log.txt",
     },
 };
