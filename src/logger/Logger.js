@@ -3,9 +3,13 @@ const constants = require("../util/constants");
 const LogSaveException = require("../exceptions/logSaveException");
 
 const logLevels = constants.logLevels;
+const logger = constants.logger;
 
 class Logger {
     static logs = [];
+    static logTimer = setInterval(() => {
+        Logger.saveToFile(logger.filepath);
+    }, logger.timerInterval);
 
     /**
      * Timestamps the message and stamps the loglevel, appending to the logs array.
@@ -40,6 +44,13 @@ class Logger {
                 error
             );
         }
+    }
+
+    static restartTimer() {
+        clearInterval(this.logTimer);
+        this.logTimer = setInterval(() => {
+            Logger.saveToFile(logger.filepath);
+        }, logger.timerInterval);
     }
 }
 
