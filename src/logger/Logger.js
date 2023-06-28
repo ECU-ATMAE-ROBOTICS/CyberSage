@@ -56,6 +56,15 @@ class Logger {
                 // Empty the logs, and restart the timer
                 this.logs.length = 0;
                 this.startTimer();
+                if (error instanceof LogSaveException) {
+                    this.log(
+                        `Exception during saving the logs: ${error.parentError}`
+                    );
+                } else {
+                    this.log(
+                        `Exception occured that isn't LogSaveException, possible exception leak.`
+                    );
+                }
             }
         }, logger.timerInterval);
     }
