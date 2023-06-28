@@ -19,51 +19,53 @@ const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAd
 const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactionRemove");
 
 client.on("ready", async () => {
-    //TODO Cache all members
     //TODO Cache all chat history in last 30 days, for each channel
 
     console.log(`Logged in as ${client.user.tag}`);
 
-    client.channels.cache
-        .get(constants.ID.roleSelectionChannelID)
-        .messages.fetch(constants.ID.setRoleMessageID)
-        .then(() => {
-            console.log(`The role-setting message has been cached`);
-        });
+    const guild = client.guilds.cache.get(constants.ID.serverID);
+    if (!guild) throw new Error("Guild not found.");
+
+    const channel = guild.channels.cache.get(
+        constants.ID.roleSelectionChannelID
+    );
+    if (!channel) throw new Error("Channel not found.");
 
     try {
-        const guild = client.guilds.cache.get(constants.ID.serverID);
-        if (!guild) throw new Error("Guild not found.");
+        await guild.members.fetch(); // Fetch all guild members
 
-        const channel = guild.channels.cache.get(
-            constants.ID.roleSelectionChannelID
-        );
-        if (!channel) throw new Error("Channel not found.");
-
-        const message = await channel.messages.fetch(
-            constants.ID.setRoleMessageID
-        );
-        if (!message) throw new Error("Message not found.");
-        const reactedEmojis = message.reactions.cache.map(
-            (reaction) => reaction.emoji.name
-        );
-
-        if (!reactedEmojis.includes(constants.reactionEmoji.bulbEmoji)) {
-            await message.react(constants.reactionEmoji.bulbEmoji);
-        }
-
-        if (!reactedEmojis.includes(constants.reactionEmoji.computerEmoji)) {
-            await message.react(constants.reactionEmoji.computerEmoji);
-        }
-
-        if (!reactedEmojis.includes(constants.reactionEmoji.toolsEmoji)) {
-            await message.react(constants.reactionEmoji.toolsEmoji);
-        }
-
-        console.log("Bot checked and added reactions if missing.");
+        guild.members.cache.forEach((member) => {
+            const memberRoles = member.roles.cache.map((role) => role.name);
+            console.log(
+                `Member ${member.user.tag} has roles: ${memberRoles.join(", ")}`
+            );
+        });
+        console.log("All members and their roles have been cached.");
     } catch (error) {
-        console.error("Error checking and adding reactions:", error);
+        console.error("Error caching members and roles:", error);
     }
+
+    const message = await channel.messages.fetch(constants.ID.setRoleMessageID);
+
+    const reactedEmojis = message.reactions.cache.map(
+        (reaction) => reaction.emoji.name
+    );
+
+    const reactionEmoji = constants.reactionEmoji;
+
+    if (!reactedEmojis.includes(reactionEmoji.bulbEmoji)) {
+        await message.react(reactionEmoji.bulbEmoji);
+    }
+
+    if (!reactedEmojis.includes(reactionEmoji.computerEmoji)) {
+        await message.react(reactionEmoji.computerEmoji);
+    }
+
+    if (!reactedEmojis.includes(reactionEmoji.toolsEmoji)) {
+        await message.react(reactionEmoji.toolsEmoji);
+    }
+
+    console.log("Bot checked and added reactions if missing.");
 });
 
 // Register event handlers
