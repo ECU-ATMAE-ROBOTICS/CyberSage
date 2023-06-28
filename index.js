@@ -14,6 +14,11 @@ const client = new Client({
 // Load constants
 const constants = require("./src/util/constants");
 
+const ID = constants.ID;
+const logLevels = constants.logLevels;
+const reactionEmoji = constants.reactionEmojis;
+// const logger = constants.logger;
+
 // Load event handlers
 const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAdd");
 const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactionRemove");
@@ -50,8 +55,6 @@ client.on("ready", async () => {
     const reactedEmojis = message.reactions.cache.map(
         (reaction) => reaction.emoji.name
     );
-
-    const reactionEmoji = constants.reactionEmoji;
 
     if (!reactedEmojis.includes(reactionEmoji.bulbEmoji)) {
         await message.react(reactionEmoji.bulbEmoji);
