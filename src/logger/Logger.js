@@ -8,6 +8,8 @@ const logger = constants.logger;
 class Logger {
     static logs = [];
     static logTimer;
+    static logDate = new Date().toISOString().split("T")[0];
+    static fileName = `${logger.filePath}/${this.logDate}.txt`;
 
     /**
      * Timestamps the message and stamps the loglevel, appending to the logs array.
@@ -26,19 +28,32 @@ class Logger {
      * the log.
      * @param {*} filePath Path to the log file.
      */
-    static saveToFile(filePath) {
+    static saveToFile() {
         try {
             // length is 1 + the highest index
-            if (this.logs.length <= 1) {
+            if (this.logs.length > 1) {
+                // File existence check / creation
+                if (fs.existsSync(this.fileName) == false) {
+                    try {
+                        let content = "";
+                        fs.writeFileSync(this.fileName, content);
+                    } catch (error) {
+                        throw error;
+                    }
+                }
                 const logData = this.logs.join("\n");
-                Logger.log(`Logs saved to file: ${filePath}`, logLevels.INFO);
-                fs.appendFileSync(filePath, logData);
+                fs.appendFileSync(this.fileName, logData);
+                this.logs.length = 0;
+                Logger.log(
+                    `Logger::saveToFile() Logs saved to file: ${this.fileName}`,
+                    logLevels.INFO
+                );
             }
-            self.startTimer();
+            this.startTimer();
         } catch (error) {
-            self.startTimer();
+            this.startTimer();
             throw new LogSaveException(
-                `Failed to save logs to ${filePath}`,
+                `Logger::saveToFile() Failed to save logs to ${this.fileName} `,
                 error
             );
         }
@@ -51,23 +66,31 @@ class Logger {
         clearInterval(this.logTimer);
         this.logTimer = setInterval(() => {
             try {
-                Logger.saveToFile(logger.filepath);
+                Logger.saveToFile();
+                let currentDate = new Date().toISOString().split("T")[0];
+                if (currentDate != this.logDate) {
+                    this.logDate = currentDate;
+                    this.fileName = `logger.filePath/${this.logDate}.txt`;
+                }
             } catch (error) {
                 // Empty the logs, and restart the timer
-                this.logs.length = 0;
                 this.startTimer();
                 if (error instanceof LogSaveException) {
                     this.log(
-                        `Exception during saving the logs: ${error.parentError}`
+                        `Logger::startTimer() Exception during saving the logs => ${error} => ${error.parentError}`,
+                        logLevels.WARNING
                     );
                 } else {
                     this.log(
-                        `Exception occured that isn't LogSaveException, possible exception leak.`
+                        `Logger::startTimer() Exception occured that isn't LogSaveException, possible exception leak => ${error}`,
+                        logLevels.WARNING
                     );
                 }
             }
         }, logger.timerInterval);
     }
+
+    static;
 }
 
 module.exports = Logger;
