@@ -11,4 +11,13 @@ module.exports = {
         roleSelectionChannelID: "1123119173757849731",
         serverID: "1106740376515125309",
     },
+
+    logLevels: {
+        TRACE: "Trace",
+        INFO: "Info",
+        WARNING: "Warning",
+        DEBUG: "Debug",
+        ERROR: "Error",
+        FATAL: "Fatal",
+    },
 };
