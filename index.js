@@ -11,13 +11,15 @@ const client = new Client({
     partials: ["MESSAGE", "CHANNEL", "REACTION", "USER", "GUILD_MEMBER"],
 });
 
+// Load imports
+const Logger = require("./src/logger/logger");
+
 // Load constants
 const constants = require("./src/util/constants");
 
 const ID = constants.ID;
 const logLevels = constants.logLevels;
 const reactionEmoji = constants.reactionEmojis;
-// const logger = constants.logger;
 
 // Load event handlers
 const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAdd");
@@ -25,8 +27,9 @@ const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactio
 
 client.on("ready", async () => {
     //TODO Cache all chat history in last 30 days, for each channel
+    Logger.restartTimer();
 
-    console.log(`Logged in as ${client.user.tag}`);
+    Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
     const guild = client.guilds.cache.get(constants.ID.serverID);
     if (!guild) throw new Error("Guild not found.");
