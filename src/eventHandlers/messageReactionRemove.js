@@ -1,79 +1,55 @@
-module.exports = (client, reaction, user) => {
-    //TODO Remove nested client.on from index.js
-    client.on("messageReactionRemove", async (reaction, user) => {
-        if (user.id === client.user.id) {
-            // The reaction was removed by the bot itself
-            return;
+// Load constants
+const constants = require(`../util/constants`);
+const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
+
+module.exports = async (client, reaction, user) => {
+    // Check if the user is the bot
+    if (user.id === client.user.id) {
+        // The reaction was added by the bot itself
+        return;
+    }
+    // Check if the reaction was added to a specific message
+    if (reaction.message.id === constants.ID.setRoleMessageID) {
+        const guild = reaction.message.guild;
+        const member = guild.members.cache.get(user.id);
+        switch (reaction.emoji.name) {
+            case constants.reactionEmoji.bulbEmoji:
+                // Handle :bulb: reaction
+                if (
+                    roleSelectionHelpers.removeRole(guild, member, `Electrical`)
+                ) {
+                    console.log(
+                        `${user.tag} has had the Eletrical role removed.`
+                    );
+                }
+                break;
+
+            case constants.reactionEmoji.computerEmoji:
+                // Handle :computer: reaction
+                if (roleSelectionHelpers.removeRole(guild, member, `Code`)) {
+                    console.log(`${user.tag} has had the Code role removed.`);
+                }
+                break;
+            case constants.reactionEmoji.toolsEmoji:
+                // Handle :tools: reaction
+                if (
+                    roleSelectionHelpers.removeRole(
+                        guild,
+                        member,
+                        `Fabrication`
+                    )
+                ) {
+                    console.log(
+                        `${user.tag} has had the Fabrication role removed.`
+                    );
+                }
+                break;
+            default:
+                // Handle other reactions
+                console.log(
+                    `User ${user.tag} reacted with an unrecognized emoji: ${reaction.emoji.name}`
+                );
+                break;
         }
-
-        if (reaction.message.id === ROLE_SET_MESSAGE_ID) {
-            const guild = reaction.message.guild;
-            const member = guild.members.cache.get(user.id);
-
-            switch (reaction.emoji.name) {
-                case bulbEmoji:
-                    console.log(
-                        `User ${user.tag} removed the :bulb: reaction.`
-                    );
-                    try {
-                        const eRole = guild.roles.cache.find(
-                            (role) => role.name === "Electrical"
-                        );
-                        if (member.roles.cache.has(eRole.id)) {
-                            await member.roles.remove(eRole);
-                            console.log(
-                                `User ${user.tag} has been removed from the "Electrical" role.`
-                            );
-                        }
-                    } catch (error) {
-                        console.error("Error removing role:", error);
-                    }
-                    break;
-
-                case computerEmoji:
-                    console.log(
-                        `User ${user.tag} removed the :computer: reaction.`
-                    );
-                    try {
-                        const cRole = guild.roles.cache.find(
-                            (role) => role.name === "Code"
-                        );
-                        if (member.roles.cache.has(cRole.id)) {
-                            await member.roles.remove(cRole);
-                            console.log(
-                                `User ${user.tag} has been removed from the "Code" role.`
-                            );
-                        }
-                    } catch (error) {
-                        console.error("Error removing role:", error);
-                    }
-                    break;
-
-                case toolsEmoji:
-                    console.log(
-                        `User ${user.tag} removed the :tools: reaction.`
-                    );
-                    try {
-                        const fRole = guild.roles.cache.find(
-                            (role) => role.name === "Fabrication"
-                        );
-                        if (member.roles.cache.has(fRole.id)) {
-                            await member.roles.remove(fRole);
-                            console.log(
-                                `User ${user.tag} has been removed from the "Fabrication" role.`
-                            );
-                        }
-                    } catch (error) {
-                        console.error("Error removing role:", error);
-                    }
-                    break;
-
-                default:
-                    console.log(
-                        `User ${user.tag} removed an unrecognized emoji: ${reaction.emoji.name}`
-                    );
-                    break;
-            }
-        }
-    });
+    }
 };
