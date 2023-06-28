@@ -1,4 +1,4 @@
-const Config = require("./ENV/config.json");
+const Config = require("./ENV/systemVariables.json");
 const { Client, GatewayIntentBits } = require("discord.js");
 const client = new Client({
     intents: [
