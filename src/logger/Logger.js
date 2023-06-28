@@ -7,9 +7,7 @@ const logger = constants.logger;
 
 class Logger {
     static logs = [];
-    static logTimer = setInterval(() => {
-        Logger.saveToFile(logger.filepath);
-    }, logger.timerInterval);
+    static logTimer;
 
     /**
      * Timestamps the message and stamps the loglevel, appending to the logs array.
@@ -36,9 +34,9 @@ class Logger {
                 Logger.log(`Logs saved to file: ${filePath}`, logLevels.INFO);
                 fs.appendFileSync(filePath, logData);
             }
+            self.startTimer();
         } catch (error) {
-            console.error("Error saving logs to file, printing to console: \n");
-            console.error(logData);
+            self.startTimer();
             throw new LogSaveException(
                 `Failed to save logs to ${filePath}`,
                 error
@@ -46,10 +44,19 @@ class Logger {
         }
     }
 
-    static restartTimer() {
+    /**
+     * Sets logTimer. If saveToFile throws a LogSaveException, empties logs array and starts timer over.
+     */
+    static startTimer() {
         clearInterval(this.logTimer);
         this.logTimer = setInterval(() => {
-            Logger.saveToFile(logger.filepath);
+            try {
+                Logger.saveToFile(logger.filepath);
+            } catch (error) {
+                // Empty the logs, and restart the timer
+                this.logs.length = 0;
+                this.startTimer();
+            }
         }, logger.timerInterval);
     }
 }
