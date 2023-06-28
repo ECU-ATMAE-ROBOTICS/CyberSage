@@ -26,6 +26,7 @@ const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAd
 const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactionRemove");
 
 client.on("ready", async () => {
+    console.clear();
     //TODO Cache all chat history in last 30 days, for each channel
     Logger.startTimer();
 
