@@ -53,7 +53,7 @@ client.on("ready", async () => {
 
     //TODO Create Emoji wrapper class?
     for (const emoji of Object.values(reactionEmojis)) {
-        Logger.log(`Checking for Bulb emoji on message: ${message.id}`);
+        Logger.log(`Checking for ${emoji} emoji on message: ${message.id}.`);
         if (!emojiExistOnMessage(message, emoji, (selfCheck = true))) {
             await message.react(emoji).catch((error) => {
                 Logger.log(
