@@ -41,7 +41,7 @@ class Logger {
                         throw error;
                     }
                 }
-                const logData = this.logs.join("\n");
+                const logData = `${this.logs.join("\n")}\n`; // Always start on a new line
                 fs.appendFileSync(this.fileName, logData);
                 this.logs.length = 0;
                 Logger.log(
