@@ -51,7 +51,7 @@ client.on("ready", async () => {
     //TODO In the event the message doesn't exist, the bot should make it.
     const message = await channel.messages.fetch(ID.setRoleMessageID);
 
-    //TODO Create Emoji wrapper class?
+    //TODO Create Emoji wrapper class? Maybe a type of enum?
     for (const emoji of Object.values(reactionEmojis)) {
         Logger.log(`Checking for ${emoji} emoji on message: ${message.id}.`);
         if (!emojiExistOnMessage(message, emoji, (selfCheck = true))) {
