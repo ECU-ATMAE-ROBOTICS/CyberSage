@@ -1,5 +1,6 @@
 const Config = require("./ENV/systemVariables.json");
 const { Client, GatewayIntentBits } = require("discord.js");
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -7,8 +8,16 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildPresences,
     ],
-    partials: ["MESSAGE", "CHANNEL", "REACTION", "USER", "GUILD_MEMBER"],
+    partials: [
+        "MESSAGE",
+        "CHANNEL",
+        "REACTION",
+        "USER",
+        "GUILD_MEMBER",
+        "GUILD_PRESENCES",
+    ],
 });
 
 // Load imports
@@ -33,43 +42,19 @@ client.on("ready", async () => {
     Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
     //TODO Manage error throwing to go through logger
-    const guild = client.guilds.cache.get(constants.ID.serverID);
+    const guild = client.guilds.cache.get(ID.serverID);
     if (!guild) throw new Error("Guild not found.");
 
-    const channel = guild.channels.cache.get(
-        constants.ID.roleSelectionChannelID
-    );
+    const channel = guild.channels.cache.get(ID.roleSelectionChannelID);
     if (!channel) throw new Error("Channel not found.");
 
-    try {
-        await guild.members.fetch(); // Fetch all guild members
-
-        guild.members.cache.forEach((member) => {
-            const memberRoles = member.roles.cache.map((role) => role.name);
-            Logger.log(
-                `Member ${member.user.tag} has roles: ${memberRoles.join(
-                    ", "
-                )}`,
-                logLevels.INFO
-            );
-        });
-        Logger.log(
-            "All members and their roles have been cached.",
-            logLevels.INFO
-        );
-    } catch (error) {
-        Logger.log(
-            `Error caching members and roles: ${error}`,
-            logLevels.WARNING
-        );
-    }
-
-    const message = await channel.messages.fetch(constants.ID.setRoleMessageID);
+    const message = await channel.messages.fetch(ID.setRoleMessageID);
 
     const reactedEmojis = message.reactions.cache.map(
         (reaction) => reaction.emoji.name
     );
 
+    //TODO Log these actions, and "Done" after they have been checked.
     if (!reactedEmojis.includes(reactionEmoji.bulbEmoji)) {
         await message.react(reactionEmoji.bulbEmoji);
     }
@@ -82,7 +67,10 @@ client.on("ready", async () => {
         await message.react(reactionEmoji.toolsEmoji);
     }
 
-    Logger.log("Bot checked and added reactions if missing.", logLevels.INFO);
+    Logger.log(
+        `Checked set-role message (${ID.setRoleMessageID}) for base reactions.`,
+        logLevels.INFO
+    );
 });
 
 // Register event handlers
