@@ -16,6 +16,7 @@ module.exports = {
         setRoleMessageID: "1123120003047247952",
         roleSelectionChannelID: "1123119173757849731",
         serverID: "1106740376515125309",
+        cyberSageID: "1123134907405828156",
     },
 
     logLevels: {

@@ -22,13 +22,14 @@ const client = new Client({
 
 // Load imports
 const Logger = require("./src/logger/logger");
+const { emojiExistOnMessage } = require("./src/util/emojiCheck");
 
 // Load constants
 const constants = require("./src/util/constants");
 
 const ID = constants.ID;
 const logLevels = constants.logLevels;
-const reactionEmoji = constants.reactionEmojis;
+const reactionEmojis = constants.reactionEmojis;
 
 // Load event handlers
 const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAdd");
@@ -36,41 +37,34 @@ const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactio
 
 client.on("ready", async () => {
     console.clear();
-    //TODO Cache all chat history in last 30 days, for each channel
-    Logger.startTimer();
 
+    Logger.startTimer();
     Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
     //TODO Manage error throwing to go through logger
     const guild = client.guilds.cache.get(ID.serverID);
     if (!guild) throw new Error("Guild not found.");
-
     const channel = guild.channels.cache.get(ID.roleSelectionChannelID);
     if (!channel) throw new Error("Channel not found.");
 
+    //TODO In the event the message doesn't exist, the bot should make it.
     const message = await channel.messages.fetch(ID.setRoleMessageID);
 
-    const reactedEmojis = message.reactions.cache.map(
-        (reaction) => reaction.emoji.name
-    );
-
-    //TODO Log these actions, and "Done" after they have been checked.
-    if (!reactedEmojis.includes(reactionEmoji.bulbEmoji)) {
-        await message.react(reactionEmoji.bulbEmoji);
+    //TODO Create Emoji wrapper class?
+    for (const emoji of Object.values(reactionEmojis)) {
+        Logger.log(`Checking for Bulb emoji on message: ${message.id}`);
+        if (!emojiExistOnMessage(message, emoji, (selfCheck = true))) {
+            await message.react(emoji).catch((error) => {
+                Logger.log(
+                    `Error when trying to put ${emoji} on message: ${message.id} => ${error}.`,
+                    logLevels.WARNING
+                );
+            });
+            Logger.log(`Successfully put ${emoji} on message: ${message.id}.`);
+        } else {
+            Logger.log(`${emoji} already exists on message: ${message.id}.`);
+        }
     }
-
-    if (!reactedEmojis.includes(reactionEmoji.computerEmoji)) {
-        await message.react(reactionEmoji.computerEmoji);
-    }
-
-    if (!reactedEmojis.includes(reactionEmoji.toolsEmoji)) {
-        await message.react(reactionEmoji.toolsEmoji);
-    }
-
-    Logger.log(
-        `Checked set-role message (${ID.setRoleMessageID}) for base reactions.`,
-        logLevels.INFO
-    );
 });
 
 // Register event handlers
