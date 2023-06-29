@@ -2,6 +2,13 @@ const { logLevels } = require("./constants");
 const Logger = require("../logger/logger");
 
 module.exports = {
+    /**
+     * Checks if a member has a role, and if so, removes it.
+     * @param {*} guild
+     * @param {*} member
+     * @param {string} roleName
+     * @return {boolean}
+     */
     removeRole: async (guild, member, roleName) => {
         try {
             const role = guild.roles.cache.find((r) => r.name === roleName);
@@ -25,6 +32,13 @@ module.exports = {
         }
     },
 
+    /**
+     * Checks if a member has a role, and adds it if not.
+     * @param {*} guild
+     * @param {*} member
+     * @param {string} roleName
+     * @return {boolean}
+     */
     addRole: async (guild, member, roleName) => {
         try {
             const role = guild.roles.cache.find((r) => r.name === roleName);

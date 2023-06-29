@@ -5,6 +5,10 @@ const LogSaveException = require("../exceptions/logSaveException");
 const logLevels = constants.logLevels;
 const logger = constants.logger;
 
+/**
+ * Static class for logging messages, and managing a timer to export logs to a file.
+ * @class Logger
+ */
 class Logger {
     static logs = [];
     static logTimer;
@@ -13,8 +17,10 @@ class Logger {
 
     /**
      * Timestamps the message and stamps the loglevel, appending to the logs array.
-     * @param {*} message Message being printed to the log
-     * @param {*} logLevel Log level being appended to the message. Useful for grepping.
+     * @param {string} message Message being printed to the log
+     * @param {string} logLevel Log level being appended to the message. Useful for grepping.
+     * @static
+     * @memberof Logger
      */
     static log(message, logLevel = logLevels.INFO) {
         const timestamp = new Date().toISOString();
@@ -26,7 +32,8 @@ class Logger {
     /**
      * Saves the current array of logs to a file. Prints to the console if unable to append to
      * the log.
-     * @param {*} filePath Path to the log file.
+     * @static
+     * @memberof Logger
      */
     static saveToFile() {
         try {
@@ -61,6 +68,8 @@ class Logger {
 
     /**
      * Sets logTimer. If saveToFile throws a LogSaveException, empties logs array and starts timer over.
+     * @static
+     * @memberof Logger
      */
     static startTimer() {
         clearInterval(this.logTimer);

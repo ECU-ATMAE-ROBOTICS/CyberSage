@@ -24,8 +24,8 @@ module.exports = async (client, reaction, user) => {
         const guild = reaction.message.guild;
         const member = guild.members.cache.get(user.id);
         switch (reaction.emoji.name) {
+            // Handle :bulb: reaction
             case reactionEmoji.bulbEmoji:
-                // Handle :bulb: reaction
                 roleSelectionHelpers.removeRole(
                     guild,
                     member,
@@ -33,13 +33,13 @@ module.exports = async (client, reaction, user) => {
                 );
                 break;
 
+            // Handle :computer: reaction
             case reactionEmoji.computerEmoji:
-                // Handle :computer: reaction
                 roleSelectionHelpers.removeRole(guild, member, roles.code);
                 break;
 
+            // Handle :tools: reaction
             case reactionEmoji.toolsEmoji:
-                // Handle :tools: reaction
                 roleSelectionHelpers.removeRole(
                     guild,
                     member,
@@ -48,7 +48,6 @@ module.exports = async (client, reaction, user) => {
                 break;
 
             default:
-                // Handle other reactions
                 Logger.log(
                     `User ${user.tag} reacted with an unrecognized emoji: ${reaction.emoji.name}`,
                     logLevels.INFO

@@ -4,8 +4,8 @@ module.exports = {
     /**
      * Checks if an exists on a specific message.
      * @param {*} message Message ID
-     * @param {*} emoji Emoji (Unicode)
-     * @param {*} selfCheck Check if the emoji is placed by the bot on the message
+     * @param {string} emoji Emoji (Unicode)
+     * @param {boolean} selfCheck Check if the emoji is placed by the bot on the message
      * @returns Boolean
      */
     emojiExistOnMessage: (message, emoji, selfCheck = false) => {
