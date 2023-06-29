@@ -1,5 +1,8 @@
-const { logLevels } = require("./constants");
+// Internal
 const Logger = require("../logger/logger");
+
+// Constants
+const { logLevels } = require("./constants");
 
 module.exports = {
     /**

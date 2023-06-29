@@ -1,12 +1,9 @@
-// Load constants
-const constants = require(`../util/constants`);
-const roleSelectionHelpers = require(`../util/roleSelectionLogic`);
+// Internal
 const Logger = require("../logger/logger");
+const roleSelectionHelpers = require(`../util//roleSelectionLogic`);
 
-const ID = constants.ID;
-const reactionEmoji = constants.reactionEmojis;
-const logLevels = constants.logLevels;
-const roles = constants.roles;
+// Constants
+const { ID, reactionEmojis, logLevels, roles } = require(`../util/constants`);
 
 /**
  * Adds a role associated with the reaction that was added.
@@ -25,17 +22,17 @@ module.exports = async (client, reaction, user) => {
         const member = guild.members.cache.get(user.id);
         switch (reaction.emoji.name) {
             // Handle :bulb: reaction
-            case reactionEmoji.bulbEmoji:
+            case reactionEmojis.bulbEmoji:
                 roleSelectionHelpers.addRole(guild, member, roles.electrical);
                 break;
 
             // Handle :computer: reaction
-            case reactionEmoji.computerEmoji:
+            case reactionEmojis.computerEmoji:
                 roleSelectionHelpers.addRole(guild, member, roles.code);
                 break;
 
             // Handle :tools: reaction
-            case reactionEmoji.toolsEmoji:
+            case reactionEmojis.toolsEmoji:
                 roleSelectionHelpers.addRole(guild, member, roles.fabrication);
                 break;
 

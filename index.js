@@ -1,5 +1,21 @@
+// Thirdparty
 const Config = require("./ENV/systemVariables.json");
 const { Client, GatewayIntentBits } = require("discord.js");
+
+// Internal
+const Logger = require("./src/logger/logger");
+const { emojiExistOnMessage } = require("./src/util/emojiCheck");
+
+// Constants
+const { ID, logLevels, reactionEmojis } = require("./src/util/constants");
+
+// Event Handlers
+const {
+    messageReactionAddHandler,
+} = require("./src/eventHandlers/messageReactionAdd");
+const {
+    messageReactionRemoveHandler,
+} = require("./src/eventHandlers/messageReactionRemove");
 
 const client = new Client({
     intents: [
@@ -19,21 +35,6 @@ const client = new Client({
         "GUILD_PRESENCES",
     ],
 });
-
-// Load imports
-const Logger = require("./src/logger/logger");
-const { emojiExistOnMessage } = require("./src/util/emojiCheck");
-
-// Load constants
-const constants = require("./src/util/constants");
-
-const ID = constants.ID;
-const logLevels = constants.logLevels;
-const reactionEmojis = constants.reactionEmojis;
-
-// Load event handlers
-const messageReactionAddHandler = require("./src/eventHandlers/messageReactionAdd");
-const messageReactionRemoveHandler = require("./src/eventHandlers/messageReactionRemove");
 
 client.on("ready", async () => {
     console.clear();
