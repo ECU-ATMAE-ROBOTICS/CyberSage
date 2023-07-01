@@ -3,19 +3,25 @@ const Config = require("./ENV/systemVariables.json");
 const { Client, GatewayIntentBits } = require("discord.js");
 
 // Internal
-const Logger = require("./src/logger/logger");
-const { emojiExistOnMessage } = require("./src/util/emojiCheck");
+const Logger = require("./src/Logger/logger");
+const {
+    emojiExistOnMessage,
+} = require("./src/Initializiation/util/emojiCheck");
 
 // Constants
-const { ID, logLevels, reactionEmojis } = require("./src/util/constants");
+const {
+    ID,
+    logLevels,
+    reactionEmojis,
+} = require("./src/Definitions/constants");
 
 // Event Handlers
 const {
-    messageReactionAddHandler,
-} = require("./src/eventHandlers/messageReactionAdd");
+    emojiAddRole,
+} = require("./src/EventHandlers/Reaction/messageReactionAdd");
 const {
-    messageReactionRemoveHandler,
-} = require("./src/eventHandlers/messageReactionRemove");
+    emojiRemoveRole,
+} = require("./src/EventHandlers/messageReactionRemove");
 
 const client = new Client({
     intents: [
@@ -68,13 +74,15 @@ client.on("ready", async () => {
     }
 });
 
+//? These event handlers are entry points. We should include logic to seperate which handler to use for which events.
+//? This could get sticky. We should consider a modular and clean way to handle this if more processes are added.
 // Register event handlers
 client.on("messageReactionAdd", (reaction, user) => {
-    messageReactionAddHandler(client, reaction, user);
+    emojiAddRole(client, reaction, user);
 });
 
 client.on("messageReactionRemove", (reaction, user) => {
-    messageReactionRemoveHandler(client, reaction, user);
+    emojiRemoveRole(client, reaction, user);
 });
 
 client.login(Config.token);
