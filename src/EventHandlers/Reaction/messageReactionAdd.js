@@ -1,6 +1,6 @@
 // Internal
-const Logger = require("../Logger/logger");
-const roleSelectionHelpers = require(`../../Processes/RoleManipulater/roleManipMain`);
+const Logger = require("../../Processes/Logger/loggerMain");
+const roleManipUtil = require(`../../Processes/RoleManipulater/roleManipMain`);
 
 // Constants
 const {
@@ -29,25 +29,17 @@ module.exports = {
             switch (reaction.emoji.name) {
                 // Handle :bulb: reaction
                 case reactionEmojis.bulbEmoji:
-                    roleSelectionHelpers.addRole(
-                        guild,
-                        member,
-                        roles.electrical
-                    );
+                    roleManipUtil.addRole(guild, member, roles.electrical);
                     break;
 
                 // Handle :computer: reaction
                 case reactionEmojis.computerEmoji:
-                    roleSelectionHelpers.addRole(guild, member, roles.code);
+                    roleManipUtil.addRole(guild, member, roles.code);
                     break;
 
                 // Handle :tools: reaction
                 case reactionEmojis.toolsEmoji:
-                    roleSelectionHelpers.addRole(
-                        guild,
-                        member,
-                        roles.fabrication
-                    );
+                    roleManipUtil.addRole(guild, member, roles.fabrication);
                     break;
 
                 default:

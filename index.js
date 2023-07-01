@@ -3,7 +3,7 @@ const Config = require("./ENV/systemVariables.json");
 const { Client, GatewayIntentBits } = require("discord.js");
 
 // Internal
-const Logger = require("./src/Logger/logger");
+const Logger = require("./src/Processes/Logger/loggerMain.js");
 const {
     emojiExistOnMessage,
 } = require("./src/Initializiation/util/emojiCheck");
@@ -21,7 +21,7 @@ const {
 } = require("./src/EventHandlers/Reaction/messageReactionAdd");
 const {
     emojiRemoveRole,
-} = require("./src/EventHandlers/messageReactionRemove");
+} = require("./src/EventHandlers/Reaction/messageReactionRemove");
 
 const client = new Client({
     intents: [

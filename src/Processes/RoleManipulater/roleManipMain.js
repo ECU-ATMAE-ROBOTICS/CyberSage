@@ -1,5 +1,5 @@
 // Internal
-const Logger = require("../../Logger/logger");
+const Logger = require("../../Processes/Logger/loggerMain");
 
 // Constants
 const { logLevels } = require("../../Definitions/constants");

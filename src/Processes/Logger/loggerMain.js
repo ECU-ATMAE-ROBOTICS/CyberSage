@@ -2,10 +2,10 @@
 const fs = require("fs");
 
 // Internal
-const LogSaveException = require("../exceptions/logSaveException");
+const LogSaveException = require("../../Exceptions/Logger/logSaveException");
 
 // Constants
-const { logLevels, logger } = require("../util/constants");
+const { logLevels, logger } = require("../../Definitions/constants");
 
 /**
  * Static class for logging messages, and managing a timer to export logs to a file.

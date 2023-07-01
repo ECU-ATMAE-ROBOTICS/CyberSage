@@ -1,9 +1,14 @@
 // Internal
-const Logger = require("../Logger/logger");
-const roleSelectionHelpers = require(`../Processes/RoleManipulation/roleManipMain`);
+const Logger = require("../../Processes/Logger/loggerMain");
+const roleManipUtil = require(`../../Processes/RoleManipulater/roleManipMain`);
 
 // Constants
-const { ID, reactionEmojis, logLevels, roles } = require(`../util/constants`);
+const {
+    ID,
+    reactionEmojis,
+    logLevels,
+    roles,
+} = require(`../../Definitions/constants`);
 
 module.exports = {
     /**
@@ -24,25 +29,17 @@ module.exports = {
             switch (reaction.emoji.name) {
                 // Handle :bulb: reaction
                 case reactionEmojis.bulbEmoji:
-                    roleSelectionHelpers.removeRole(
-                        guild,
-                        member,
-                        roles.electrical
-                    );
+                    roleManipUtil.removeRole(guild, member, roles.electrical);
                     break;
 
                 // Handle :computer: reaction
                 case reactionEmojis.computerEmoji:
-                    roleSelectionHelpers.removeRole(guild, member, roles.code);
+                    roleManipUtil.removeRole(guild, member, roles.code);
                     break;
 
                 // Handle :tools: reaction
                 case reactionEmojis.toolsEmoji:
-                    roleSelectionHelpers.removeRole(
-                        guild,
-                        member,
-                        roles.fabrication
-                    );
+                    roleManipUtil.removeRole(guild, member, roles.fabrication);
                     break;
 
                 default:
