@@ -1,5 +1,5 @@
 // Constants
-const { constantIds } = require("../../Definitions/IdConstants");
+const { constantIds } = require("../../Definitions/idConstants");
 
 module.exports = {
     /**
