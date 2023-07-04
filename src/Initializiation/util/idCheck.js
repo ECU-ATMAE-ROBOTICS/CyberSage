@@ -1,3 +1,4 @@
+// Exceptions
 const {
     GuildNotFoundException,
 } = require("../../Exceptions/Initialization/GuildNotFoundException");
@@ -6,15 +7,28 @@ const {
 } = require("../../Exceptions/Initialization/GuildNotFoundException");
 
 module.exports = {
-    guildIdCheck: (client) => {
-        const guild = client.guilds.cache.get(constantIds.serverID);
+    /**
+     * Checks for a guild given a guild id and the client.
+     * @param {*} client
+     * @param {*} guildId
+     * @return {*} guild
+     */
+    guildIdCheck: (client, guildId) => {
+        const guild = client.guilds.cache.get(guildId);
         if (!guild) throw new GuildNotFoundException("Guild was not found");
+        return guild;
     },
-    channelIdCheck: (guild) => {
-        const channel = guild.channels.cache.get(
-            roleConfigIds.roleSelectionChannelID
-        );
+
+    /**
+     * Checks for a channel given a guild and a channel id
+     * @param {*} guild
+     * @param {*} channelId
+     * @return {*} channel
+     */
+    channelIdCheck: (guild, channelId) => {
+        const channel = guild.channels.cache.get(channelId);
         if (!channel)
             throw new ChannelNotFoundException("Channel was not found.");
+        return channel;
     },
 };
