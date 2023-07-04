@@ -1,23 +1,23 @@
 // Internal
-const Logger = require("../../Processes/Logger/loggerMain");
-const roleManipUtil = require(`../../Processes/RoleManipulater/roleManipMain`);
+const Logger = require("../../../../logger/logger");
+const roleController = require(`../../../processes/role_controller/roleController`);
 
 // Constants
-const { roleConfigIds } = require("../../Definitions/IdConstants");
+const { roleConfigIds } = require("../../../constants/idConsts");
 
-const { logLevels } = require("../../Definitions/loggerConstants");
+const { logLevels } = require("../../../constants/loggerConsts");
 
-const { reactionEmojis, roles } = require("../../Definitions/serverConstants");
+const { reactionEmojis, roles } = require("../../../constants/serverConstants");
 
 module.exports = {
     /**
-     * Removes a role associated with the reaction that was removed.
+     * Adds a role associated with the reaction that was added.
      * @param {*} client The bot itself.
-     * @param {*} reaction The reaction that was caught in the remove reaction event.
-     * @param {*} user The user who removed a reaction.
+     * @param {*} reaction The reaction that was added.
+     * @param {*} user The user who added the reaction.
      * @returns
      */
-    emojiRemoveRole: async (client, reaction, user) => {
+    emojiAddRole: async (client, reaction, user) => {
         if (user.id === client.user.id) {
             return;
         }
@@ -28,17 +28,17 @@ module.exports = {
             switch (reaction.emoji.name) {
                 // Handle :bulb: reaction
                 case reactionEmojis.bulbEmoji:
-                    roleManipUtil.removeRole(guild, member, roles.electrical);
+                    roleController.addRole(guild, member, roles.electrical);
                     break;
 
                 // Handle :computer: reaction
                 case reactionEmojis.computerEmoji:
-                    roleManipUtil.removeRole(guild, member, roles.code);
+                    roleController.addRole(guild, member, roles.code);
                     break;
 
                 // Handle :tools: reaction
                 case reactionEmojis.toolsEmoji:
-                    roleManipUtil.removeRole(guild, member, roles.fabrication);
+                    roleController.addRole(guild, member, roles.fabrication);
                     break;
 
                 default:

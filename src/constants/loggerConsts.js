@@ -9,7 +9,7 @@ module.exports = {
     },
 
     loggerConfig: {
-        filePath: "./src/logger/logs",
+        filePath: "./data/logs",
         timerInterval: 10000, // 30 minutes
     },
 };

@@ -1,8 +1,8 @@
 // Internal
-const Logger = require("../../Processes/Logger/loggerMain");
+const Logger = require("../../../logger/logger");
 
 // Constants
-const { logLevels } = require("../../Definitions/loggerConstants");
+const { logLevels } = require("../../constants/loggerConsts");
 
 module.exports = {
     /**

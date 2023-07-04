@@ -1,10 +1,10 @@
 // Exceptions
 const {
     GuildNotFoundException,
-} = require("../../Exceptions/Initialization/GuildNotFoundException");
+} = require("../../../../exceptions/Initialization/GuildNotFoundException");
 const {
     ChannelNotFoundException,
-} = require("../../Exceptions/Initialization/GuildNotFoundException");
+} = require("../../../../exceptions/Initialization/GuildNotFoundException");
 
 module.exports = {
     /**

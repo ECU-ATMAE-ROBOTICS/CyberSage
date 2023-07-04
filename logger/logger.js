@@ -1,14 +1,11 @@
 // Standard
 const fs = require("fs");
 
-// Internal
-const LogSaveException = require("../../Exceptions/Logger/LogSaveException");
+// Exceptions
+const LogSaveException = require("../exceptions/logger/LogSaveException");
 
 // Constants
-const {
-    logLevels,
-    loggerConfig,
-} = require("../../Definitions/loggerConstants");
+const { logLevels, loggerConfig } = require("../src/constants/loggerConsts");
 
 /**
  * Static class for logging messages, and managing a timer to export logs to a file.
@@ -92,12 +89,12 @@ class Logger {
                 if (error instanceof LogSaveException) {
                     this.log(
                         `Logger::startTimer() Exception during saving the logs => ${error} => ${error.parentError}`,
-                        logLevels.WARNING
+                        logLevels.ERROR
                     );
                 } else {
                     this.log(
                         `Logger::startTimer() Exception occured that isn't LogSaveException, possible exception leak => ${error}`,
-                        logLevels.WARNING
+                        logLevels.ERROR
                     );
                 }
             }
