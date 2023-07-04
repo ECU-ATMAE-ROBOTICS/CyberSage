@@ -7,9 +7,21 @@ const Logger = require("./src/Processes/Logger/loggerMain.js");
 const {
     emojiExistOnMessage,
 } = require("./src/Initializiation/util/emojiCheck");
+const {
+    guildIdCheck,
+    channelIdCheck,
+} = require("./src/Initializiation/util/idCheck");
+
+// Exceptions
+const {
+    GuildNotFoundException,
+} = require("./src/Exceptions/Initialization/GuildNotFoundException");
+const {
+    ChannelNotFoundException,
+} = require("./src/Exceptions/Initialization/GuildNotFoundException");
 
 // Constants
-const { constantIds, roleConfigIds } = require("./src/Definitions/IdConstants");
+const { constantIds, roleConfigIds } = require("./src/Definitions/idConstants");
 
 const { logLevels } = require("./src/Definitions/loggerConstants");
 
@@ -50,13 +62,25 @@ client.on("ready", async () => {
     Logger.startTimer();
     Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
-    //TODO Manage error throwing to go through logger
-    const guild = client.guilds.cache.get(constantIds.serverID);
-    if (!guild) throw new Error("Guild not found.");
-    const channel = guild.channels.cache.get(
-        roleConfigIds.roleSelectionChannelID
-    );
-    if (!channel) throw new Error("Channel not found.");
+    try {
+        const guild = await guildIdCheck(client, constantIds.serverID);
+        const channel = await channelIdCheck(
+            guild,
+            roleConfigIds.roleSelectionChannelID
+        );
+    } catch (err) {
+        if (err instanceof GuildNotFoundException) {
+            Logger.log(err.message, logLevels.FATAL);
+        } else if (err instanceof ChannelNotFoundException) {
+            Logger.log(err.message, logLevels.FATAL);
+        } else {
+            Logger.log(
+                `client.on() Unknown error occured => ${err}`,
+                logLevels.FATAL
+            );
+        }
+        throw err;
+    }
 
     //TODO In the event the message doesn't exist, the bot should make it.
     const message = await channel.messages.fetch(
