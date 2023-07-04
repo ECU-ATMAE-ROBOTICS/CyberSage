@@ -6,11 +6,11 @@ const {
 } = require("../../Exceptions/Initialization/GuildNotFoundException");
 
 module.exports = {
-    guildIdCheck: async (client) => {
+    guildIdCheck: (client) => {
         const guild = client.guilds.cache.get(constantIds.serverID);
         if (!guild) throw new GuildNotFoundException("Guild was not found");
     },
-    channelIdCheck: async (client) => {
+    channelIdCheck: (guild) => {
         const channel = guild.channels.cache.get(
             roleConfigIds.roleSelectionChannelID
         );
