@@ -5,7 +5,11 @@ const fs = require("fs");
 const LogSaveException = require("../../Exceptions/Logger/logSaveException");
 
 // Constants
-const { logLevels, logger } = require("../../Definitions/constants");
+const {
+    logLevels,
+    loggerConfig,
+} = require("../../Definitions/loggerConstants");
+const loggerConstants = require("../../Definitions/loggerConstants");
 
 /**
  * Static class for logging messages, and managing a timer to export logs to a file.
@@ -15,7 +19,7 @@ class Logger {
     static logs = [];
     static logTimer;
     static logDate = new Date().toISOString().split("T")[0];
-    static fileName = `${logger.filePath}/${this.logDate}.txt`;
+    static fileName = `${loggerConfig.filePath}/${this.logDate}.txt`;
 
     /**
      * Timestamps the message and stamps the loglevel, appending to the logs array.
@@ -81,7 +85,7 @@ class Logger {
                 let currentDate = new Date().toISOString().split("T")[0];
                 if (currentDate != this.logDate) {
                     this.logDate = currentDate;
-                    this.fileName = `logger.filePath/${this.logDate}.txt`;
+                    this.fileName = `${loggerConfig.filePath}/${this.logDate}.txt`;
                 }
             } catch (error) {
                 // Empty the logs, and restart the timer
@@ -98,7 +102,7 @@ class Logger {
                     );
                 }
             }
-        }, logger.timerInterval);
+        }, loggerConfig.timerInterval);
     }
 
     static;

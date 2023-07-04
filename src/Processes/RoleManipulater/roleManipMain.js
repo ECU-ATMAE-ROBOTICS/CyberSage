@@ -2,7 +2,7 @@
 const Logger = require("../../Processes/Logger/loggerMain");
 
 // Constants
-const { logLevels } = require("../../Definitions/constants");
+const { logLevels } = require("../../Definitions/loggerConstants");
 
 module.exports = {
     /**

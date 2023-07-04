@@ -1,5 +1,5 @@
 // Constants
-const { ID } = require("../../Definitions/constants");
+const { constantIds } = require("../../Definitions/IdConstants");
 
 module.exports = {
     /**
@@ -10,7 +10,7 @@ module.exports = {
      * @returns Boolean
      */
     emojiExistOnMessage: (message, emoji, selfCheck = false) => {
-        const botUserId = ID.cyberSageID;
+        const botUserId = constantIds.cyberSageID;
         const foundReaction = message.reactions.cache.find(
             (reaction) => reaction.emoji.name === emoji
         );

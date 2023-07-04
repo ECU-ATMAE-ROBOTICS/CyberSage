@@ -1,5 +1,5 @@
 // Thirdparty
-const Config = require("./ENV/systemVariables.json");
+const Config = require("./ENV/secrets.json");
 const { Client, GatewayIntentBits } = require("discord.js");
 
 // Internal
@@ -9,11 +9,11 @@ const {
 } = require("./src/Initializiation/util/emojiCheck");
 
 // Constants
-const {
-    ID,
-    logLevels,
-    reactionEmojis,
-} = require("./src/Definitions/constants");
+const { constantIds, roleConfigIds } = require("./src/Definitions/IdConstants");
+
+const { logLevels } = require("./src/Definitions/loggerConstants");
+
+const { reactionEmojis } = require("./src/Definitions/serverConstants");
 
 // Event Handlers
 const {
@@ -23,6 +23,7 @@ const {
     emojiRemoveRole,
 } = require("./src/EventHandlers/Reaction/messageReactionRemove");
 
+//TODO Reduce unnecessary intents and partials
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -42,6 +43,7 @@ const client = new Client({
     ],
 });
 
+//TODO Migrate Initialization to proper directories for modularity
 client.on("ready", async () => {
     console.clear();
 
@@ -49,13 +51,17 @@ client.on("ready", async () => {
     Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
 
     //TODO Manage error throwing to go through logger
-    const guild = client.guilds.cache.get(ID.serverID);
+    const guild = client.guilds.cache.get(constantIds.serverID);
     if (!guild) throw new Error("Guild not found.");
-    const channel = guild.channels.cache.get(ID.roleSelectionChannelID);
+    const channel = guild.channels.cache.get(
+        roleConfigIds.roleSelectionChannelID
+    );
     if (!channel) throw new Error("Channel not found.");
 
     //TODO In the event the message doesn't exist, the bot should make it.
-    const message = await channel.messages.fetch(ID.setRoleMessageID);
+    const message = await channel.messages.fetch(
+        roleConfigIds.setRoleMessageID
+    );
 
     //TODO Create Emoji wrapper class? Maybe a type of Enum?
     for (const emoji of Object.values(reactionEmojis)) {

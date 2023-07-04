@@ -3,12 +3,11 @@ const Logger = require("../../Processes/Logger/loggerMain");
 const roleManipUtil = require(`../../Processes/RoleManipulater/roleManipMain`);
 
 // Constants
-const {
-    ID,
-    reactionEmojis,
-    logLevels,
-    roles,
-} = require(`../../Definitions/constants`);
+const { roleConfigIds } = require("../../Definitions/IdConstants");
+
+const { logLevels } = require("../../Definitions/loggerConstants");
+
+const { reactionEmojis, roles } = require("../../Definitions/serverConstants");
 
 module.exports = {
     /**
@@ -23,7 +22,7 @@ module.exports = {
             return;
         }
 
-        if (reaction.message.id === ID.setRoleMessageID) {
+        if (reaction.message.id === roleConfigIds.setRoleMessageID) {
             const guild = reaction.message.guild;
             const member = guild.members.cache.get(user.id);
             switch (reaction.emoji.name) {
