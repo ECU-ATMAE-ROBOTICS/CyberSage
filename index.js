@@ -14,7 +14,7 @@ const {
 // Event Handlers
 const {
     emojiAddRole,
-} = require("./src/events/reaction/reaction_add/messageReactionAdd");
+} = require("./src/events/reaction/reaction_add/messageReactionAdd.js");
 const {
     emojiRemoveRole,
 } = require("./src/events/reaction/reaction_remove/messageReactionRemove");
