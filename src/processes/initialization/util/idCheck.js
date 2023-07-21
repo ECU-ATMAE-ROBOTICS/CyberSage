@@ -4,7 +4,7 @@ const {
 } = require("../../../../exceptions/initialization/GuildNotFoundException");
 const {
     ChannelNotFoundException,
-} = require("../../../../exceptions/initialization/GuildNotFoundException");
+} = require("../../../../exceptions/initialization/ChannelNotFoundException");
 
 module.exports = {
     /**
