@@ -2,6 +2,7 @@
 const { guildIdCheck, channelIdCheck } = require("./util/idCheck");
 const Logger = require("../../../logger/logger");
 const { emojiExistOnMessage } = require("./util/emojiCheck");
+const Auditor = require("../../processes/activity_checker/auditor");
 
 // Exceptions
 const {
@@ -26,6 +27,8 @@ module.exports = {
         Logger.startTimer();
         Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
     },
+
+    startAuditor: () => {}, // Fill in
 
     /**
      * Checks to ensure that the guild and channel id provided is valid, throws errors if not
