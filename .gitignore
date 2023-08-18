@@ -132,3 +132,4 @@ dist
 # Custom
 ENV/
 data/
+.DS_Store
