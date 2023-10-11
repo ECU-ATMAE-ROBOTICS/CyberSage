@@ -1,107 +1,136 @@
-// Standard
-const fs = require("fs");
-
-// Exceptions
 const LogSaveException = require("../exceptions/logger/LogSaveException");
-
-// Constants
-const { logLevels, loggerConfig } = require("../src/constants/loggerConsts");
+const FileTransport = require("./transports/file_transport");
+const ConsoleTransport = require("./transports/console_transport");
 
 /**
- * Static class for logging messages, and managing a timer to export logs to a file.
+ * Class for logging messages, managing a timer to export logs to a file, and logging to the console.
  * @class Logger
  */
 class Logger {
-    static logs = [];
-    static logTimer;
-    static logDate = new Date().toISOString().split("T")[0];
-    static fileName = `${loggerConfig.filePath}/${this.logDate}.txt`;
-
     /**
-     * Timestamps the message and stamps the loglevel, appending to the logs array.
-     * @param {string} message Message being printed to the log
-     * @param {string} logLevel Log level being appended to the message. Useful for grepping.
-     * @static
-     * @memberof Logger
+     * Initializes the Logger with a file and console transport.
+     * @constructor
      */
-    static log(message, logLevel = logLevels.INFO) {
-        const timestamp = new Date().toISOString();
-        const logEntry = `[${logLevel}] ${timestamp}: ${message}`;
-        this.logs.push(logEntry);
-        console.log(logEntry);
+    constructor() {
+        this.fileTransport = new FileTransport();
+        this.consoleTransport = new ConsoleTransport();
     }
 
     /**
-     * Saves the current array of logs to a file. Prints to the console if unable to append to
-     * the log.
-     * @static
-     * @memberof Logger
+     * Log a message with an optional log level.
+     * @param {string} message - The message to be logged.
+     * @param {string} logLevel - The log level being appended to the message. Default is INFO.
      */
-    static saveToFile() {
+    log(message, logLevel = logLevels.INFO) {
+        this.fileTransport.log(message, logLevel);
+        this.consoleTransport.log(message, logLevel);
+    }
+
+    /**
+     * Save the logs to a file. If an error occurs, it throws a LogSaveException.
+     */
+    saveToFile() {
         try {
-            // length is 1 + the highest index
-            if (this.logs.length > 1) {
-                // File existence check / creation
-                if (fs.existsSync(this.fileName) == false) {
-                    try {
-                        let content = "";
-                        fs.writeFileSync(this.fileName, content);
-                    } catch (error) {
-                        throw error;
-                    }
-                }
-                const logData = `${this.logs.join("\n")}\n`; // Always start on a new line
-                fs.appendFileSync(this.fileName, logData);
-                this.logs.length = 0;
-                Logger.log(
-                    `Logger::saveToFile() Logs saved to file: ${this.fileName}`,
-                    logLevels.INFO
-                );
-            }
-            this.startTimer();
+            this.fileTransport.saveToFile();
         } catch (error) {
-            this.startTimer();
             throw new LogSaveException(
-                `Logger::saveToFile() Failed to save logs to ${this.fileName} `,
+                `Logger::saveToFile() Failed to save logs to ${this.fileTransport.fileName}`,
                 error
             );
         }
     }
 
     /**
-     * Sets logTimer. If saveToFile throws a LogSaveException, empties logs array and starts timer over.
-     * @static
-     * @memberof Logger
+     * Start the timer to periodically save logs to a file and handle exceptions.
      */
-    static startTimer() {
-        clearInterval(this.logTimer);
-        this.logTimer = setInterval(() => {
+    startLogWriterTimer() {
+        clearInterval(this.logWriterTimer);
+        this.logWriterTimer = setInterval(() => {
             try {
-                Logger.saveToFile();
-                let currentDate = new Date().toISOString().split("T")[0];
-                if (currentDate != this.logDate) {
-                    this.logDate = currentDate;
-                    this.fileName = `${loggerConfig.filePath}/${this.logDate}.txt`;
+                this.saveToFile();
+                const currentDate = new Date().toISOString().split("T")[0];
+                if (currentDate !== this.fileTransport.logDate) {
+                    this.fileTransport.logDate = currentDate;
+                    this.fileTransport.fileName = `${loggerConfig.filePath}/${this.fileTransport.logDate}.txt`;
                 }
             } catch (error) {
-                // Empty the logs, and restart the timer
-                this.startTimer();
+                this.startLogWriterTimer();
                 if (error instanceof LogSaveException) {
-                    this.log(
+                    this.consoleTransport.log(
                         `Logger::startTimer() Exception during saving the logs => ${error} => ${error.parentError}`,
                         logLevels.ERROR
                     );
                 } else {
-                    this.log(
-                        `Logger::startTimer() Exception occured that isn't LogSaveException, possible exception leak => ${error}`,
+                    this.consoleTransport.log(
+                        `Logger::startTimer() Exception occurred that isn't LogSaveException, possible exception leak => ${error}`,
                         logLevels.ERROR
                     );
                 }
             }
-        }, loggerConfig.timerInterval);
+        }, loggerConfig.timerWriterInterval);
     }
 
-    static;
+    /**
+     * Start the timer to periodically combine log files by month/year.
+     */
+    startLogCombinerTimer() {
+        clearInterval(this.logCombinerTimer);
+        this.logCombinerTimer = setInterval(() => {
+            try {
+                this.combineLogsByMonthAndYear();
+            } catch (error) {
+                this.consoleTransport.log(
+                    `Logger::startTimer() Exception occurred => ${error}`,
+                    logLevels.ERROR
+                );
+            }
+        }, loggerConfig.timerCombinerInterval);
+    }
+
+    /**
+     * Combine log files in the same month and year into a single file.
+     */
+    combineLogsByMonthAndYear() {
+        const logFiles = this.fileTransport.getLogFilesInDirectory();
+        const groupedLogs = {};
+
+        logFiles.forEach((logFile) => {
+            const logFilePath = path.join(loggerConfig.filePath, logFile);
+            const stats = fs.statSync(logFilePath);
+            const fileDate = new Date(stats.mtime);
+
+            // Extract month and year (e.g., "2023-10")
+            const monthYear = `${fileDate.getFullYear()}-${(
+                fileDate.getMonth() + 1
+            )
+                .toString()
+                .padStart(2, "0")}`;
+
+            if (!groupedLogs[monthYear]) {
+                groupedLogs[monthYear] = [];
+            }
+
+            // Read and append log content to the groupedLogs
+            const logContent = fs.readFileSync(logFilePath, "utf8");
+            groupedLogs[monthYear].push(logContent);
+        });
+
+        // Combine and save logs for each month and year
+        for (const [monthYear, logs] of Object.entries(groupedLogs)) {
+            const combinedLogs = logs.join("\n\n");
+            const combinedFileName = path.join(
+                loggerConfig.filePath,
+                `${monthYear}.txt`
+            );
+            fs.writeFileSync(combinedFileName, combinedLogs);
+        }
+
+        // Delete individual log files after combining
+        logFiles.forEach((logFile) => {
+            const logFilePath = path.join(loggerConfig.filePath, logFile);
+            fs.unlinkSync(logFilePath);
+        });
+    }
 }
 
-module.exports = Logger;
+module.exports = new Logger();

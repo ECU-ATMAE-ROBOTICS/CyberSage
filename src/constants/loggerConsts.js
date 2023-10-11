@@ -10,6 +10,7 @@ module.exports = {
 
     loggerConfig: {
         filePath: "./data/logs",
-        timerInterval: 10000, // 30 minutes
+        timerWriterInterval: 10000, // 30 minutes
+        timerCombinerInterval: 10000, // 30 minutes
     },
 };
