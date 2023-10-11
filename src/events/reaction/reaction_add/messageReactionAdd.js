@@ -41,6 +41,11 @@ module.exports = {
                     roleController.addRole(guild, member, roles.fabrication);
                     break;
 
+                // Handle :mortar_board: reaction
+                case reactionEmojis.alumniEmoji:
+                    roleController.addRole(guild, member, roles.alumni);
+                    break;
+
                 default:
                     Logger.log(
                         `User ${user.tag} reacted with an unrecognized emoji: ${reaction.emoji.name}`,

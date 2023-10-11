@@ -3,11 +3,13 @@ module.exports = {
         bulbEmoji: "💡",
         computerEmoji: "💻",
         toolsEmoji: "🛠️",
+        alumniEmoji: "🎓",
     },
 
     roles: {
         electrical: "Electrical",
         code: "Code",
         fabrication: "Fabrication",
+        alumni: "Alumni",
     },
 };
