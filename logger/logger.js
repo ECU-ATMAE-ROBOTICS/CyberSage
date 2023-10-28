@@ -2,6 +2,8 @@ const LogSaveException = require("../exceptions/logger/LogSaveException");
 const FileTransport = require("./transports/file_transport");
 const ConsoleTransport = require("./transports/console_transport");
 
+const { logLevels, loggerConfig } = require("../src/constants/loggerConsts");
+
 /**
  * Class for logging messages, managing a timer to export logs to a file, and logging to the console.
  * @class Logger
