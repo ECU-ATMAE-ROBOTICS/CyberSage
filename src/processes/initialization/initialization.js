@@ -25,7 +25,7 @@ module.exports = {
     startLogger: (client) => {
         console.clear();
         Logger.startLogWriterTimer();
-        Logger.startLogCombinerTimer();
+        // Logger.startLogCombinerTimer(); //TODO Get this working
         Logger.log(`Logged in as ${client.user.tag}`, logLevels.INFO);
     },
 

@@ -59,12 +59,12 @@ class Logger {
                 this.startLogWriterTimer();
                 if (error instanceof LogSaveException) {
                     this.consoleTransport.log(
-                        `Logger::startTimer() Exception during saving the logs => ${error} => ${error.parentError}`,
+                        `Logger::startLogWriterTimer() Exception during saving the logs => ${error} => ${error.parentError}`,
                         logLevels.ERROR
                     );
                 } else {
                     this.consoleTransport.log(
-                        `Logger::startTimer() Exception occurred that isn't LogSaveException, possible exception leak => ${error}`,
+                        `Logger::startLogWriterTimer() Exception occurred that isn't LogSaveException, possible exception leak => ${error}`,
                         logLevels.ERROR
                     );
                 }
@@ -75,6 +75,7 @@ class Logger {
     /**
      * Start the timer to periodically combine log files by month/year.
      */
+    //! Some kind of issue with a path not being found
     startLogCombinerTimer() {
         clearInterval(this.logCombinerTimer);
         this.logCombinerTimer = setInterval(() => {
@@ -82,7 +83,7 @@ class Logger {
                 this.combineLogsByMonthAndYear();
             } catch (error) {
                 this.consoleTransport.log(
-                    `Logger::startTimer() Exception occurred => ${error}`,
+                    `Logger::startLogCombinerTimer() Exception occurred => ${error}`,
                     logLevels.ERROR
                 );
             }
