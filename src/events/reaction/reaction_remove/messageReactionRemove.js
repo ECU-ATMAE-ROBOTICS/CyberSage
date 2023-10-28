@@ -44,6 +44,7 @@ module.exports = {
                 // Handle :mortar_board: reaction
                 case reactionEmojis.alumniEmoji:
                     roleController.removeRole(guild, member, roles.alumni);
+                    break;
 
                 default:
                     Logger.log(
