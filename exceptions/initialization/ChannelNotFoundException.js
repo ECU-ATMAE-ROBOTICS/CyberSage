@@ -4,11 +4,11 @@
  * @extends {Error}
  */
 class ChannelNotFoundException extends Error {
-    constructor(message = "", err) {
-        super(message);
-        this.name = "ChannelNotFoundException";
-        this.parentError = err;
-    }
+  constructor (message = '', err) {
+    super(message)
+    this.name = 'ChannelNotFoundException'
+    this.parentError = err
+  }
 }
 
-module.exports = ChannelNotFoundException;
+module.exports = ChannelNotFoundException

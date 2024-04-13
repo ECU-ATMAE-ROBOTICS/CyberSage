@@ -4,11 +4,11 @@
  * @extends {Error}
  */
 class LogSaveException extends Error {
-    constructor(message = "", err) {
-        super(message);
-        this.name = "LogSaveException";
-        this.parentError = err;
-    }
+  constructor (message = '', err) {
+    super(message)
+    this.name = 'LogSaveException'
+    this.parentError = err
+  }
 }
 
-module.exports = LogSaveException;
+module.exports = LogSaveException

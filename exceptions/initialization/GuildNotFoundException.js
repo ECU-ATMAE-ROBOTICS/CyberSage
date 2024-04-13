@@ -4,11 +4,11 @@
  * @extends {Error}
  */
 class GuildNotFoundException extends Error {
-    constructor(message = "", err) {
-        super(message);
-        this.name = "GuildNotFoundException";
-        this.parentError = err;
-    }
+  constructor (message = '', err) {
+    super(message)
+    this.name = 'GuildNotFoundException'
+    this.parentError = err
+  }
 }
 
-module.exports = GuildNotFoundException;
+module.exports = GuildNotFoundException
