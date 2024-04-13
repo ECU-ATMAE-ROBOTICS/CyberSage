@@ -1,6 +1,6 @@
 {
   "name": "cybersage",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Discord Bot",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/ECU-ATMAE-ROBOTICS/CyberSage#readme",
   "dependencies": {
-    "discord.js": "^14.11.0"
+    "discord.js": "^14.14.1"
   }
 }
