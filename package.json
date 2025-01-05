@@ -1,33 +1,27 @@
 {
   "name": "cybersage",
-  "version": "2.2.1",
-  "description": "Discord Bot",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ECU-ATMAE-ROBOTICS/CyberSage.git"
-  },
-  "author": "Jarred",
-  "license": "SEE LICENSE IN LICENSE",
-  "bugs": {
-    "url": "https://github.com/ECU-ATMAE-ROBOTICS/CyberSage/issues"
-  },
-  "homepage": "https://github.com/ECU-ATMAE-ROBOTICS/CyberSage#readme",
+  "version": "1",
+  "type": "module",
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.17.2",
+    "npm": "^11.0.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.0.0",
-    "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "globals": "^15.0.0"
+    "@eslint/js": "^9.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.0",
+    "@typescript-eslint/parser": "^8.19.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.19.0"
+  },
+  "scripts": {
+    "build": "npx tsc --build",
+    "clean": "rm -rf ./dist",
+    "lint": "npx eslint ./src",
+    "format": "npx prettier --config .prettierrc.json --ignore-path .gitignore ./src --write"
   }
 }
