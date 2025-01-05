@@ -1,9 +1,9 @@
 {
   "name": "cybersage",
   "version": "1",
-  "type": "module",
   "dependencies": {
     "discord.js": "^14.17.2",
+    "dotenv": "^16.4.7",
     "npm": "^11.0.0"
   },
   "devDependencies": {
@@ -19,6 +19,7 @@
     "typescript-eslint": "^8.19.0"
   },
   "scripts": {
+    "start": "node dist/bot.js",
     "build": "npx tsc --build",
     "clean": "rm -rf ./dist",
     "lint": "npx eslint ./src",
