@@ -130,6 +130,5 @@ dist
 .pnp.*
 
 # Custom
-ENV/
-data/
+.env
 .DS_Store
