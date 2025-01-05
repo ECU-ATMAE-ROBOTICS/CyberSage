@@ -1,13 +1,13 @@
 // tsconfig.json
 {
   "compilerOptions": {
-    "outDir": "dist", // where to put the compiled JS files
-    "target": "ES6", // which level of JS support to target
-    "module": "CommonJS", // which system for the program AMD, UMD, System, CommonJS
+    "outDir": "dist",
+    "target": "ES2024",
+    "module": "CommonJS",
 
-    // Recommended: Compiler complains about expressions implicitly typed as 'any'
-    "noImplicitAny": true, 
+    "noImplicitAny": true,
+    "removeComments": true
   },
-  "include": ["src"], // which files to compile
-  "exclude": ["node_modules"], // which files to skip
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
