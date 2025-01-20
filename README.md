@@ -1,10 +1,46 @@
 # CyberSage
+CyberSage is a simple bot to allow users to react to a message and have a role assigned to them. 
 
-CyberSage is designed to perform various chores and housekeeping. It utilizes the Discord.js library and provides functionality such as managing roles and logging events.
+## Getting Started
+### Update the Config
+The bot can be used by setting the message id in the [config](src/config.json), and adding a role map. 
+```
+{
+  "messageId": "0000000000000000000",
 
-## Features
+  "roleMap": {
+    "💻": "0000000000000000000",
+    "🔨": "0000000000000000000",
+    "💡": "0000000000000000000"
+  }
+}
+```
+The bot will then monitor that message, and appropriately assign roles respectively to any users who react.
 
-- Role selection: Users can select roles by reacting to a designated message.
-- Logging: CyberSage logs various events and saves them to a log file.
-- Timer: A Timer handles automatic logging exporting.
-- Error handling: Custom exceptions are used to handle and report errors during logging.
+### Build the Bot
+1. Run `npm run build` to compile the typescript source into javascript and copy the source config to the build destination.
+2. Run `npm run start` to start the bot.
+
+This will run the compiled version of the bot located in the `dist` folder. When running manually, run from the root folder.
+
+
+## Planned Features / Improvements
+- Muliple messages, each with a mapping
+- Slash commands to modify the config (message ids and role mappings)
+- Create Docker image for easy deployment
+- Improve config path logic
+
+## Contribute
+
+Utilize the [scripts](package.json) to ensure contributions are meeting standards. Additions should pass:
+- linting (`npm run lint`)
+- Formatting (`npm run format`)
+- Testing (`npm run test`)
+
+Ensure commits follow the [conventional](https://www.conventionalcommits.org/en/v1.0.0/#specification) format.
+
+## License
+
+This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE).
+
+For full license details, visit the official [GNU AGPL-3.0 License](https://www.gnu.org/licenses/agpl-3.0.html).
