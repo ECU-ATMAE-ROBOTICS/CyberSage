@@ -1,10 +1,10 @@
 import { REST, Routes } from 'discord.js';
-import { pingCommand } from './commands/ping';
+// import { pingCommand } from './commands/ping';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const commands = [pingCommand.data.toJSON()];
+// const commands = [pingCommand.data.toJSON()];
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 (async () => {
@@ -12,7 +12,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(Routes.applicationCommands(process.env.APP_ID), {
-      body: commands,
+      body: [],
     });
 
     console.log('Successfully reloaded application (/) commands.');

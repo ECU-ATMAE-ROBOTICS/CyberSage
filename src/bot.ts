@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 import messageReactionAdd from './events/messageReactionAdd';
 import messageReactionRemove from './events/messageReactionRemove';
-import interactionCreateHandler from './events/interactionCreate';
+// import interactionCreateHandler from './events/interactionCreate';
 
 import { loadConfig } from './services/configManager';
 
@@ -25,9 +25,9 @@ async function main() {
   const config = await loadConfig();
   console.log('Loaded Config:', config);
 
-  client.on('messageReactionAdd', messageReactionAdd);
-  client.on('messageReactionRemove', messageReactionRemove);
-  client.on('interactionCreate', interactionCreateHandler);
+  client.on('messageReactionAdd', messageReactionAdd(config));
+  client.on('messageReactionRemove', messageReactionRemove(config));
+  // client.on('interactionCreate', interactionCreateHandler); Slash-command handler
 
   client.once('ready', () => {
     console.log(`Logged in as ${client.user?.tag}!`);
