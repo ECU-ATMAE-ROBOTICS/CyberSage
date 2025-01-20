@@ -1,51 +1,27 @@
-import * as fs from 'fs/promises';
-import { Mutex } from 'async-mutex';
+import * as fs from 'fs';
 
-const mutex = new Mutex();
-const config_path = 'dist/config.json';
-
-interface ConfigStructure {
-  messageMappings: Record<string, Record<string, string>>;
+export interface Config {
+  messageId: string;
+  roleMap: Record<string, string>;
 }
 
-const defaultConfig: ConfigStructure = { messageMappings: {} };
+const filePath = 'dist/config.json';
+const defaultConfig: Config = {
+  messageId: '',
+  roleMap: {},
+};
 
-export async function saveConfig(config: Map<string, Map<string, string>>) {
-  await mutex.runExclusive(async () => {
-    const objectToSave = {
-      messageMappings: Object.fromEntries(
-        Array.from(config.entries(), ([key, value]) => [
-          key,
-          Object.fromEntries(value),
-        ]),
-      ),
+export function loadConfig(): Config {
+  try {
+    const data = fs.readFileSync(filePath, 'utf-8');
+    const parsed = JSON.parse(data) as Config;
+
+    return {
+      messageId: parsed.messageId,
+      roleMap: parsed.roleMap,
     };
-
-    await fs.writeFile(config_path, JSON.stringify(objectToSave, null, 2));
-  });
-}
-
-export async function loadConfig(): Promise<Map<string, Map<string, string>>> {
-  return mutex.runExclusive(async () => {
-    try {
-      await fs.access(config_path);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        await fs.writeFile(config_path, JSON.stringify(defaultConfig, null, 2));
-      } else {
-        throw error;
-      }
-    }
-    const content = await fs.readFile(config_path, 'utf-8');
-    const parsedObject: ConfigStructure = JSON.parse(content);
-
-    const config = new Map(
-      Object.entries(parsedObject.messageMappings).map(([key, value]) => [
-        key,
-        new Map(Object.entries(value)),
-      ]),
-    );
-
-    return config;
-  });
+  } catch (error) {
+    console.error('Failed to load config:', error);
+    return defaultConfig;
+  }
 }

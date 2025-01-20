@@ -1,7 +1,7 @@
 {
   "name": "cybersage",
   "version": "3.0.0",
-  "description": "Discord bot",
+  "description": "In-house bot for ECU Robotic's Discord server",
   "main": "dist/bot.js",
   "author": {
     "name": "Jarred"
@@ -11,7 +11,6 @@
     "test": "tests"
   },
   "dependencies": {
-    "async-mutex": "^0.5.0",
     "discord.js": "^14.17.2",
     "dotenv": "^16.4.7",
     "npm": "^11.0.0"
@@ -30,7 +29,7 @@
   },
   "scripts": {
     "start": "node dist/bot.js",
-    "build": "npx tsc --build",
+    "build": "npx tsc --build && cp src/config.json dist/config.json",
     "clean": "rm -rf ./dist",
     "lint": "npx eslint ./src",
     "format": "npx prettier --config .prettierrc.json --ignore-path .gitignore  --write ./src",
