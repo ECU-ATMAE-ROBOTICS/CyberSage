@@ -17,22 +17,24 @@ The bot can be used by setting the message id in the [config](src/config.json), 
 ```
 The bot will then monitor that message, and appropriately assign roles respectively to any users who react.
 
-### Build the Bot
-1. Run `npm run build` to compile the typescript source into javascript and copy the source config to the build destination.
-2. Run `npm run start` to start the bot.
+### Build the Docker Container
+1. Add the bot token to the [`create-docker-container.sh`](scripts/create-docker-container.sh) script
+2. Run the `create-docker-container.sh`
 
-This will run the compiled version of the bot located in the `dist` folder. When running manually, run from the root folder.
+This will build the image for the bot, and start the container. This container will use the config from the src directory mentioned previously. 
+
+> NOTE: Refer to [Docker docs](https://docs.docker.com/reference/cli/docker/) for further information on building image and running the container. 
 
 
 ## Planned Features / Improvements
 - Muliple messages, each with a mapping
 - Slash commands to modify the config (message ids and role mappings)
-- Create Docker image for easy deployment
+- Improve docker experience
 - Improve config path logic
 
 ## Contribute
 
-Utilize the [scripts](package.json) to ensure contributions are meeting standards. Additions should pass:
+Utilize the npm [scripts](package.json) to ensure contributions are meeting standards. Additions should pass:
 - linting (`npm run lint`)
 - Formatting (`npm run format`)
 - Testing (`npm run test`)
