@@ -1,21 +1,33 @@
 # CyberSage
-CyberSage is a simple bot to allow users to react to a message and have a role assigned to them. 
+CyberSage is a simple bot to allow users to react to messages and have a role assigned to them. 
 
 ## Getting Started
 ### Update the Config
-The bot can be used by setting the message id in the [config](src/config.json), and adding a role map. 
+The bot can be used by setting message ids in the [config](config.json), and adding a role map to it. 
+#### _Example Config_
 ```
 {
-  "messageId": "0000000000000000000",
+  "messages": [
+    {
+      "messageId": "0000000000000000000",
 
-  "roleMap": {
-    "💻": "0000000000000000000",
-    "🔨": "0000000000000000000",
-    "💡": "0000000000000000000"
-  }
+      "roleMap": {
+        "💻": "0000000000000000000",
+        "🔨": "0000000000000000000",
+        "💡": "0000000000000000000"
+      }
+    },
+    {
+      "messageId": "0000000000000000000",
+
+      "roleMap": {
+        "🕸️": "0000000000000000000"
+      }
+    }
+  ]
 }
 ```
-The bot will then monitor that message, and appropriately assign roles respectively to any users who react.
+The bot will then monitor any messages you add to the config, and apply roles based on the appropriate role map for the message.
 
 ### Build the Docker Container
 1. Add the bot token to the [`create-docker-container.sh`](scripts/create-docker-container.sh) script
@@ -23,11 +35,10 @@ The bot will then monitor that message, and appropriately assign roles respectiv
 
 This will build the image for the bot, and start the container. This container will use the config from the src directory mentioned previously. 
 
-> NOTE: Refer to [Docker docs](https://docs.docker.com/reference/cli/docker/) for further information on building image and running the container. 
+> NOTE: Refer to [Docker docs](https://docs.docker.com/reference/cli/docker/) for further information on building the image and running the container. 
 
 
 ## Planned Features / Improvements
-- Muliple messages, each with a mapping
 - Slash commands to modify the config (message ids and role mappings)
 - Improve docker experience
 - Improve config path logic

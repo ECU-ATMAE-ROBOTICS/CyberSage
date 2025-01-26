@@ -5,7 +5,7 @@ import messageReactionAdd from './events/messageReactionAdd';
 import messageReactionRemove from './events/messageReactionRemove';
 // import interactionCreateHandler from './events/interactionCreate';
 
-import { loadConfig } from './services/configManager';
+import { loadConfig, prettifyConfig } from './services/configManager';
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ const client = new Client({
 
 async function main() {
   const config = await loadConfig();
-  console.log('Loaded Config:', config);
+  console.log('Loaded Config:', prettifyConfig(config));
 
   client.on('messageReactionAdd', messageReactionAdd(config));
   client.on('messageReactionRemove', messageReactionRemove(config));
