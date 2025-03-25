@@ -9,7 +9,7 @@ export interface Config {
   messages: Message[];
 }
 
-const filePath = 'dist/config.json';
+const filePath = 'config.json';
 const defaultConfig: Config = {
   messages: [
     {
