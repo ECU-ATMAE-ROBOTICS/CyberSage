@@ -1,4 +1,27 @@
-node_modules
-dist
-tests
+# Ignore everything by default
+*
+
+# Allow these specific files/directories
+!Dockerfile
+!package.json
+!package-lock.json
+!tsconfig.json
+!config/*.json  # Only allow config files, not the whole directory
+
+# Allow source files
+!src/**
+
+# Specific deny
 .git
+.gitignore
+node_modules/
+tests/
+*.log
+*.md
+*.mjs
+.vscode/
+.idea/
+.eslint*
+*.tmp
+*.bak
+coverage/
