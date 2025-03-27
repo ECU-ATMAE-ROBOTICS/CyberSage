@@ -1,51 +1,63 @@
 # CyberSage
-CyberSage is a simple bot to allow users to react to messages and have a role assigned to them. 
 
-## Getting Started
-### Update the Config
-The bot can be used by setting message ids in the [config](config.json), and adding a role map to it. 
-#### _Example Config_
+CyberSage is a simple bot to allow users to react to messages and have a role assigned to them.
+
+## Hosting (On a RaspberryPi)
+
+### Prerequisites
+
+Install Docker. More details and instructions found in the [Docker documentation](https://docs.docker.com/engine/)
+
+### 1. Create a Config
+
+The bot can be used by creating a [config](config.json), ensure it's named `config.json`. The bot will use this config when monitoring messages, and apply roles based on the appropriate role map for the message.
+
+### 2. Pull the Docker Image
+
+The image can be found in [this](https://hub.docker.com/repository/docker/jarredtd/cybersage/general) DockerHub repistory.
+
+```shell
+docker pull jarredtd/cybersage:latest 
 ```
-{
-  "messages": [
-    {
-      "messageId": "0000000000000000000",
 
-      "roleMap": {
-        "💻": "0000000000000000000",
-        "🔨": "0000000000000000000",
-        "💡": "0000000000000000000"
-      }
-    },
-    {
-      "messageId": "0000000000000000000",
+### 3. Create the Container
 
-      "roleMap": {
-        "🕸️": "0000000000000000000"
-      }
-    }
-  ]
-}
+Create the container by setting the token and the path to the config.
+
+The token can be found/reset by accessing the bot on [discord.dev](https://discord.com/developers/applications). Read the [documentation](https://discord.com/developers/docs/quick-start/getting-started) for more information on creating the bot if you have not done so already.
+
+You can set the path to the config but either running the command in the same location as the config, or changing `$(pwd)/config.json` to the absolute path to the config. More information on bind mounts in the [Docker documentation](https://docs.docker.com/engine/storage/bind-mounts/).
+
+```shell
+docker run -d \
+  --name cybersage \
+  --env list TOKEN= \
+  --mount $(pwd)/config.json:/usr/src/app/config.json \
+  jarredtd/cybersage
 ```
-The bot will then monitor any messages you add to the config, and apply roles based on the appropriate role map for the message.
 
-### Build the Docker Container
-1. Add the bot token to the [`create-docker-container.sh`](scripts/create-docker-container.sh) script
-2. Run the `create-docker-container.sh`
+### Example
 
-This will build the image for the bot, and start the container. This container will use the config from the src directory mentioned previously. 
+> Note: Ensure the config is filled in after creating it.
 
-> NOTE: Refer to [Docker docs](https://docs.docker.com/reference/cli/docker/) for further information on building the image and running the container. 
+```shell
+docker pull jarredtd/cybersage:latest 
 
+mkdir ~/Documents/cybersage/
+cd ~/Documents/cybersage/
+touch config.json
 
-## Planned Features / Improvements
-- Slash commands to modify the config (message ids and role mappings)
-- Improve docker experience
-- Improve config path logic
+docker run -d \
+  --name cybersage \
+  -e TOKEN= \
+  -v $(pwd)/config.json:/usr/src/app/config.json \
+  jarredtd/cybersage:latest
+```
 
 ## Contribute
 
 Utilize the npm [scripts](package.json) to ensure contributions are meeting standards. Additions should pass:
+
 - linting (`npm run lint`)
 - Formatting (`npm run format`)
 - Testing (`npm run test`)
